@@ -25,8 +25,7 @@ SensorData GPSs::read() {
     SensorData sensorData = SensorData(id, 1);
     uint8_t buf[8];
     BufferPacker<8> packer;
-
-    if(this->wGPS.fix) {
+    if(this->wGPS.parse(this->wGPS.lastNMEA()) && this->wGPS.fix) {
         packer.pack(float(this->wGPS.latitudeDegrees));
         packer.pack(float(this->wGPS.longitudeDegrees));
         packer.deepCopyTo(buf);
