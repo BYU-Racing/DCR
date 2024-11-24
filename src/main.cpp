@@ -4,7 +4,7 @@
 #include <RVC.h>
 
 constexpr bool ACCEL_CRIT = false;
-constexpr uint32_t ACCEL_INTERVAL = 20;
+constexpr uint32_t ACCEL_INTERVAL = 50;
 
 Adafruit_BNO08x_RVC rvc = Adafruit_BNO08x_RVC();
 RVC accelerometer = RVC(ReservedIDs::RVCId, ACCEL_CRIT, ACCEL_INTERVAL, &rvc);
@@ -31,13 +31,12 @@ void setup() {
     motorCAN.begin();
     motorCAN.setBaudRate(CAN_BAUD_RATE);
 
-    Serial1.begin(115200);
-    accelerometer.begin(&Serial1);
+    Serial2.begin(115200);
+    accelerometer.begin(&Serial2);
     
     dcr.begin(&motorCAN, &comsCAN);
 }
 
 void loop() {
     dcr.checkSensors();
-
 }
