@@ -7,16 +7,15 @@ constexpr bool ACCEL_CRIT = false;
 constexpr uint32_t ACCEL_INTERVAL = 50;
 
 Adafruit_BNO08x_RVC rvc = Adafruit_BNO08x_RVC();
-RVC accelerometer = RVC(ReservedIDs::RVCId, ACCEL_CRIT, ACCEL_INTERVAL, &rvc);
+//RVC accelerometer = RVC(ReservedIDs::RVCId, ACCEL_CRIT, ACCEL_INTERVAL, &rvc);
 
 GPSs myGPS = GPSs(10, &Serial3);
 
 
 
-constexpr size_t NUM_SENSORS = 2;
+constexpr size_t NUM_SENSORS = 1;
 
 Sensor* SENSORS[] = {
-    &accelerometer,
     &myGPS
 };
 
@@ -35,8 +34,8 @@ void setup() {
     motorCAN.begin();
     motorCAN.setBaudRate(CAN_BAUD_RATE);
 
-    Serial2.begin(115200);
-    accelerometer.begin(&Serial2);
+    //Serial2.begin(115200);
+    //accelerometer.begin(&Serial2);
     myGPS.begin();
     
     dcr.begin(&motorCAN, &comsCAN);

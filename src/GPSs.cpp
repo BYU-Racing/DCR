@@ -17,7 +17,7 @@ Health GPSs::healthCheck() const {
 }
 
 bool GPSs::ready() {
-    this->wGPS.read(); // TODO: See if we can throw this away
+    char c = this->wGPS.read(); // TODO: See if we can throw this away
     return this->wGPS.newNMEAreceived();
 }
 
@@ -25,10 +25,28 @@ SensorData GPSs::read() {
     SensorData sensorData = SensorData(id, 1);
     uint8_t buf[8];
     BufferPacker<8> packer;
-    if(this->wGPS.parse(this->wGPS.lastNMEA()) && this->wGPS.fix) {
-        packer.pack(float(this->wGPS.latitudeDegrees));
-        packer.pack(float(this->wGPS.longitudeDegrees));
-        packer.deepCopyTo(buf);
+    if(this->wGPS.parse(this->wGPS.lastNMEA())) {
+        if(this->wGPS.fix) {
+            Serial.println("LOCKED");
+            packer.pack(float(this->wGPS.latitudeDegrees));
+            packer.pack(float(this->wGPS.longitudeDegrees));
+            packer.deepCopyTo(buf);
+
+            Serial.print("LAT: ");
+            Serial.print(this->wGPS.latitudeDegrees, 5);
+            Serial.print(" \t LONG: ");
+            Serial.println(this->wGPS.longitudeDegrees, 5);
+
+            for(int i; i < 8; i++) {
+                Serial.print(buf[i]);
+                Serial.print(", ");
+            }
+            Serial.println("");
+        } else {
+            packer.pack(0);
+            packer.deepCopyTo(buf);
+            Serial.println("NO LOCK");
+        }
     } else {
         packer.pack(0);
         packer.deepCopyTo(buf);
