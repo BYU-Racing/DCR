@@ -2,18 +2,21 @@
 #include <FlexCAN_T4.h>
 #include <DataCollector.h>
 #include <RVC.h>
+#include <GPSs.h>
 
 constexpr bool ACCEL_CRIT = false;
 constexpr uint32_t ACCEL_INTERVAL = 20;
 
 Adafruit_BNO08x_RVC rvc = Adafruit_BNO08x_RVC();
 RVC accelerometer = RVC(ReservedIDs::RVCId, ACCEL_CRIT, ACCEL_INTERVAL, &rvc);
+GPSs myGPS = GPSs(9, &Serial5);
 
 
-constexpr size_t NUM_SENSORS = 1;
+constexpr size_t NUM_SENSORS = 2;
 
 Sensor* SENSORS[] = {
-    &accelerometer
+    &accelerometer,
+    &myGPS,
 };
 
 FlexCAN_T4<CAN2, RX_SIZE_256, TX_SIZE_16> comsCAN;
