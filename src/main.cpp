@@ -34,13 +34,14 @@ void setup() {
     motorCAN.begin();
     motorCAN.setBaudRate(CAN_BAUD_RATE);
 
-    Serial1.begin(115200);
-    accelerometer.begin(&Serial1);
+    Serial2.begin(115200);
+    accelerometer.begin(&Serial2);
+    myGPS.begin();
     
     dcr.begin(&motorCAN, &comsCAN);
+    Serial.println("BEGAN");
 }
 
 void loop() {
     dcr.checkSensors();
-
 }
